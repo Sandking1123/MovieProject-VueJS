@@ -1,6 +1,8 @@
 #Webstorm
 .idea
-dist/
+src/dist/
+package-lock.json
+dist/build.js
 
 # Logs
 logs

@@ -1,17 +1,8 @@
-/*
- * ----------------------------------------------------------------------------
- * "THE BEER-WARE LICENSE" (Revision 42):
- * <HakunaMacouta> wrote this file.  As long as you retain this notice you
- * can do whatever you want with this stuff. If we meet some day, and you think
- * this stuff is worth it, you can buy me a beer in return.   Thomas Blanc
- * ----------------------------------------------------------------------------
-<<<<<<< HEAD
- */
 let path = require('path');
 let webpack = require('webpack');
 
 module.exports = {
-	entry: './src/main.js',
+	entry: './src/vue/main.js',
 	output: {
 		path: path.resolve(__dirname, './dist'),
 		publicPath: '/dist/',
@@ -41,7 +32,7 @@ module.exports = {
 				exclude: /node_modules/
 			},
 			{
-				test: /\.(png|jpg|gif|svg)$/,
+				test: /\.(png|jpeg|jpg|gif|svg)$/,
 				loader: 'file-loader',
 				options: {
 					name: '[name].[ext]?[hash]'
