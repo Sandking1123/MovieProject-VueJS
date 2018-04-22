@@ -6,7 +6,7 @@
   "scripts": {
     "build": "node_modules/.bin/webpack --progress --hide-modules",
     "dev": "node_modules/.bin/webpack-dev-server --open --hot",
-    "start": "npm install && node_modules/.bin/webpack --progress --hide-modules && node_modules/.bin/webpack-dev-server --open --hot && node src/node/app.js"
+    "start": "npm install && node_modules/.bin/webpack.cmd --progress --hide-modules && node src/node/app.js"
   },
   "author": "Guillaume NEDELEC <guillaume.nedelec3308@gmail.com>",
   "dependencies": {
