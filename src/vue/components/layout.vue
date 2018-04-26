@@ -18,17 +18,20 @@
         </v-list>
       </v-navigation-drawer>
 
-      <v-toolbar color="primary" app absolute clipped-left>
+      <v-toolbar color="toolbar" app fixed clipped-left>
         <v-toolbar-side-icon @click.native="drawer = !drawer"></v-toolbar-side-icon>
         <span class="title ml-3 mr-5"><img src="../../static/img/logo.png" style="width: 175px" /></span>
-        <v-text-field
-                solo-inverted
-                flat
-                label="Search"
-                prepend-icon="search"
-        ></v-text-field>
         <v-spacer></v-spacer>
       </v-toolbar>
+      <v-content v-bind:class="screenSize">
+        <v-container fluid fill-height>
+          <v-layout justify-center>
+            <v-flex class="main-flex">
+              <router-view></router-view>
+            </v-flex>
+          </v-layout>
+        </v-container>
+      </v-content>
     </v-layout>
   </v-app>
 </template>
@@ -47,6 +50,9 @@
         computed: {
             movies: function() {
                 return this.$store.state.movies;
+            },
+            screenSize() {
+                return this.$vuetify.breakpoint.mdAndDown ? 'movie-content-md' : 'movie-content';
             }
         }
     }
@@ -83,12 +89,20 @@
     width: 100%;
   }
 
+  .movie-content {
+    padding: 64px 0px 0px 210px !important;
+  }
+
+  .movie-content-md {
+    padding: 64px 0px 0px 135px !important;
+  }
+
   .list>div  {
     height: 100% !important;
     width: 100% !important;
     text-align: center;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     flex-direction: column;
   }
@@ -105,6 +119,10 @@
   .list__tile__sub-title {
     text-align: center;
     font-weight: 400;
+  }
+
+  .main-flex {
+    padding-left: 100px;
   }
 </style>
 
