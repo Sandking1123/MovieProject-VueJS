@@ -4,4 +4,4 @@ const app = express();
 
 app.use('/', routes);
 
-app.listen(8000, () => console.log('app listening on port 8000'));
+app.listen(8080, () => console.log('app listening on port 8080 : http://localhost:8080'));

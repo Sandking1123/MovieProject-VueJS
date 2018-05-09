@@ -102,7 +102,6 @@
 
                 console.log(movie);
 
-
                 this.$store.dispatch('addMovie',movie).then(
                     () =>
                         this.$router.replace({ path: '/' })
@@ -114,6 +113,6 @@
 
 <style lang="css">
     .form-add-content hr {
-        margin-bottom: 100px;
+        margin-bottom: 65px;
     }
 </style>

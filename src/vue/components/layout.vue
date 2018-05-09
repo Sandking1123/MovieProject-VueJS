@@ -20,7 +20,11 @@
 
       <v-toolbar color="toolbar" app fixed clipped-left>
         <v-toolbar-side-icon @click.native="drawer = !drawer"></v-toolbar-side-icon>
-        <span class="title ml-3 mr-5"><img src="../../static/img/logo.png" style="width: 175px" /></span>
+        <span class="title ml-3 mr-5">
+          <router-link :to="{ name: 'home'}">
+            <img src="/../../static/img/logo.png" style="width: 175px" />
+          </router-link>
+        </span>
         <v-spacer></v-spacer>
       </v-toolbar>
       <v-content v-bind:class="screenSize">
@@ -68,6 +72,9 @@
     width: 210px !important;
   }
 
+  .navigation-drawer--open ~ .movie-content{
+    padding: 64px 0 0 133px !important;
+  }
 
   .navigation-drawer__border {
     display: inline;
@@ -87,14 +94,6 @@
   .navigation-drawer>.list .list__tile {
     height: 100%;
     width: 100%;
-  }
-
-  .movie-content {
-    padding: 64px 0px 0px 210px !important;
-  }
-
-  .movie-content-md {
-    padding: 64px 0px 0px 135px !important;
   }
 
   .list>div  {
