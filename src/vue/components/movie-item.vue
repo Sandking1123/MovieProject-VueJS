@@ -1,5 +1,5 @@
 <template>
-	<v-card color="cards" class="black--text">
+	<v-card color="cards" class="black--text" :id="movie.id">
 		<v-container fluid grid-list-lg>
 			<v-layout>
 				<v-flex xs5>
@@ -16,7 +16,7 @@
 						<div>Genre : {{ movie.type }} </div>
 						<div>Langue : {{ movie.lang }} </div>
 						<div>De {{ movie.real.name }} ({{movie.real.nationality}})</div>
-						<star-rating :value="movie.note"></star-rating>
+						<star-rating :value="movie.note" :disabled="true"></star-rating>
 					</div>
 				</v-flex>
 			</v-layout>
@@ -31,7 +31,7 @@
 		</v-card-actions>
 		<v-slide-y-transition>
 			<v-card-text v-show="show">
-				{{movie.desc}}
+				{{cutLongtDesc}}
 			</v-card-text>
 		</v-slide-y-transition>
 	</v-card>
@@ -46,17 +46,22 @@
             }
         },
         methods: {
-            deletemovie: function(){
-                this.$store.dispatch('deleteMovie', this.$store.state.movies.indexOf(this.movie));
-                this.$router.replace({ path: '/' });
-            }
+            deletemovie: function(movie){
+                console.log(this.$store.state.movies.indexOf(movie));
+                console.log(this.$store.state.movies);
+                document.getElementById(movie.id).style.display = "none";
+                this.$store.dispatch('removeMovie', this.$store.state.movies.indexOf(movie)).then(
+                    () =>
+                        this.$router.replace({ path: '/' })
+				);
+            },
         },
         computed : {
             cutLongtext() {
                 return (this.movie.title.length >= 17)?this.movie.title.slice(0,16) + "...":this.movie.title;
             },
             cutLongtDesc() {
-                return (this.movie.desc.length >= 100)?this.movie.title.slice(0,99) + "...":this.movie.desc;
+                return (this.movie.desc.length >= 100)?this.movie.desc.slice(0,99) + "...":this.movie.desc;
             }
         }
     }

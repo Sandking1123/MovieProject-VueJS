@@ -5,7 +5,7 @@
 		<v-container fluid grid-list-md>
 			<v-layout row wrap justify-space-around>
 				<v-flex xs2>
-					<v-card>
+					<v-card class="details">
 						<img class="affiche" :src="movie.poster_url" alt="affiche">
 					</v-card>
 				</v-flex>
@@ -22,7 +22,7 @@
 									<span class="intitule">Genre du film : </span>{{movie.type}}<br/>
 								</div>
 								<div class="actions">
-									<star-rating></star-rating>
+									<star-rating :value="movie.note" :disabled="true"></star-rating>
 									<v-btn	color="primary"
 											class="black--text"
 											v-on:click="editmovie(movie)">
@@ -64,9 +64,13 @@
             }
         },
         methods:{
-            deletemovie: function(){
-                this.$store.dispatch('deleteMovie', this.$store.state.movies.indexOf(this.movie));
-                this.$router.replace({ path: '/' });
+            deletemovie: function(movie){
+                console.log(this.$store.state.movies.indexOf(movie));
+                console.log(this.$store.state.movies);
+                this.$store.dispatch('removeMovie', this.$store.state.movies.indexOf(movie)).then(
+                    () =>
+                        this.$router.replace({ path: '/' })
+				);
             },
             editmovie: function(){
                 this.$router.push({ name: 'edit', params: { id: this.id }});

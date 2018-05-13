@@ -6,6 +6,7 @@
             <v-text-field
                     label="Nom du film "
                     v-model="newFilm.nameFilm"
+                    :rules="requiredRules"
                     required
             ></v-text-field>
             <v-text-field
@@ -17,16 +18,19 @@
             <v-text-field
                     label="Langue "
                     v-model="newFilm.langueFilm"
+                    :rules="requiredRules"
                     required
             ></v-text-field>
             <v-text-field
                     label="Nom du réalisteur "
                     v-model="newFilm.newReal.nomReal"
+                    :rules="requiredRules"
                     required
             ></v-text-field>
             <v-text-field
                     label="Nationalité du réalisteur "
                     v-model="newFilm.newReal.nationaliteReal"
+                    :rules="requiredRules"
                     required
             ></v-text-field>
             <v-text-field
@@ -42,7 +46,16 @@
                     :rules="[v => !!v || 'Vous devez sélectionner un genre']"
                     required
             ></v-select>
-
+            <v-text-field
+                    name="synopsis"
+                    label="Synopsis"
+                    v-model="newFilm.synopsisFilm"
+                    textarea
+            ></v-text-field>
+            Note du film
+            <star-rating
+                    v-model="newFilm.note"
+            ></star-rating>
             <v-btn
                     @click="submit"
                     :disabled="!valid"
@@ -58,21 +71,25 @@
         data: () => ({
             valid: true,
             newFilm : {
-                "nameFilm": '',
-                "anneeFilm": '',
-                "langueFilm": '',
-                "genreFilm": null,
-                "newReal" : {
-                    "nomReal": '',
-                    "nationaliteReal": '',
-                    "naissanceReal": '',
+                nameFilm: '',
+                anneeFilm: '',
+                langueFilm: '',
+                genreFilm: null,
+                newReal : {
+                    nomReal: '',
+                    nationaliteReal: '',
+                    naissanceReal: '',
                 },
+                synopsisFilm: '',
+                note : 0,
+                affiche : "/../../static/poster/no_poster.jpg"
             },
             items: [
                 'Action',
                 'Animation',
                 'Aventure',
                 'Biographique',
+                'Fantastique',
                 'Comédie',
             ],
             naissanceRules: [
@@ -83,29 +100,38 @@
                 v => !!v || "L'annee doit etre sur 4 chiffres !",
                 v => /[0-9]{4}/.test(v) || "L'annee doit etre sur 4 chiffres !"
             ],
-        }),
+            requiredRules: [
+                v => !!v || "Ce champ est requis.",
+            ],
+    }),
 
         methods: {
             submit() {
-                const movie = {
-                    title: this.newFilm.nameFilm,
-                    year: this.newFilm.anneeFilm,
-                    language: this.newFilm.langueFilm,
-                    type: this.newFilm.genreFilm
-                };
+                if (this.$refs.form.validate()) {
+                    if (this.newFilm.synopsisFilm.length === 0) {
+                        this.newFilm.synopsisFilm = "Aucun synopsis renseigné."
+                    }
+                    const movie = {
+                        title: this.newFilm.nameFilm,
+                        year: this.newFilm.anneeFilm,
+                        lang: this.newFilm.langueFilm,
+                        type: this.newFilm.genreFilm,
+                        desc: this.newFilm.synopsisFilm,
+                        note: this.newFilm.note,
+                        poster_url: this.newFilm.affiche,
+                    };
 
-                movie.real = {
-                    name: this.newFilm.newReal.nomReal,
-                    nationality: this.newFilm.newReal.nationaliteReal,
-                    birth: this.newFilm.newReal.naissanceReal,
-                };
+                    movie.real = {
+                        name: this.newFilm.newReal.nomReal,
+                        nationality: this.newFilm.newReal.nationaliteReal,
+                        birth: this.newFilm.newReal.naissanceReal,
+                    };
 
-                console.log(movie);
-
-                this.$store.dispatch('addMovie',movie).then(
-                    () =>
-                        this.$router.replace({ path: '/' })
-                );
+                    this.$store.dispatch('addMovie', movie).then(
+                        () =>
+                            this.$router.replace({path: '/'})
+                    );
+                }
             }
         }
     }
@@ -113,6 +139,6 @@
 
 <style lang="css">
     .form-add-content hr {
-        margin-bottom: 65px;
+        margin-bottom: 20px;
     }
 </style>

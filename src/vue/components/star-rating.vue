@@ -15,6 +15,15 @@
 <script>
     export default {
         name: "star-rating",
+
+        props: {
+            'name': String,
+            'value': null,
+            'id': String,
+            'disabled': Boolean,
+            'required': Boolean
+        },
+
         data: function () {
             return {
                 temp_value: null,
@@ -86,7 +95,7 @@
         cursor: pointer;
     }
     .star-rating__star.is-selected {
-        color: #ffd700;
+        color: #dcac02;
     }
     .star-rating__star.is-disabled:hover {
         cursor: default;

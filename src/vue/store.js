@@ -18,8 +18,8 @@ const store = new Vuex.Store({
         removeMovie: (state, id) =>{
             state.movies.splice(id,1);
         },
-        editMovie: (state, id) =>{
-            //TODO
+        editMovie: (state, movie) =>{
+           // state.movies.splice(movie.id,1, movie);
         }
     },
     actions: {
@@ -46,7 +46,14 @@ const store = new Vuex.Store({
                 })
         },
         editMovie (context, movie) {
-            //TODO
+           /* Axios.put('/api/movie/:id', {
+                params: {
+                    id: movie.id
+                }
+            })
+                .then(response => {
+                    context.commit('editMovie', movie)
+                })*/
         }
     },
     getters: {
