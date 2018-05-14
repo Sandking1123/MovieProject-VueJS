@@ -52,11 +52,18 @@
                     v-model="movie.desc"
                     textarea
             ></v-text-field>
-            Note du film
-            <star-rating
-                    :value="movie.note"
-                    v-model="movie.note"
-            ></star-rating>
+            <div class="inline">
+                Note du film :
+                <star-rating
+                        :value="movie.note"
+                        v-model="movie.note"
+                ></star-rating>
+            </div>
+            <div class="inline">
+                Poster du film :
+                <v-btn color="primary" class="black--text"><v-icon>attach_file</v-icon></v-btn><input name="poster" type="file"/>
+            </div>
+            <br>
             <v-btn
                     @click="submit"
                     :disabled="!valid"
@@ -126,7 +133,10 @@
 
                     this.$store.dispatch('editMovie', movie).then(
                         () =>
-                            this.$router.replace({path: '/'})
+                            this.$store.dispatch('uploadPoster', file).then(
+                                () =>
+                                    this.$router.replace({path: '/'})
+                            )
                     );
                 }
             }
@@ -137,5 +147,12 @@
 <style lang="css">
     .form-edit-content hr {
         margin-bottom: 20px;
+    }
+
+    .inline {
+        display: inline;
+    }
+
+    input[type="file"] {
     }
 </style>

@@ -22,7 +22,10 @@ const store = new Vuex.Store({
         editMovie: (state, movie) =>{
             if(state.movies.findIndex(m => m.id === movie.id) !== -1) //verification de l'existance du film
                 state.movies.splice(state.movies.findIndex(m => m.id === movie.id),1, movie);
-        }
+        },
+        uploadPoster: (state, file) =>{
+
+        },
     },
     actions: {
         displayMovies (context) {
@@ -51,6 +54,12 @@ const store = new Vuex.Store({
             Axios.put('/api/movie/edit/:movie', movie)
                 .then(response => {
                     context.commit('editMovie', movie)
+                })
+        },
+        uploadPoster (context, file) {
+            Axios.post('/api/upload', file)
+                .then(response => {
+                    context.commit('uploadPoster', file)
                 })
         }
     },

@@ -2,6 +2,8 @@ const express = require('express');
 const path = require('path');
 const router = express();
 const cors = require('cors');
+var upload = multer({ dest: '/src/static/poster/' })
+
 
 router.use(cors());
 router.use(express.json());
@@ -140,5 +142,12 @@ router.put('/api/movie/edit/:movie', (request, response) => {
     movies.splice(movies.findIndex(m => movie.id === m.id),1, movie);
     response.json(movies);
 });
+
+//Upload poster
+router.post('/api/upload', upload.single('poster'), function (req, res, next) {
+    // req.file is the `avatar` file
+    // req.body will hold the text fields, if there were any
+})
+
 
 module.exports = router;
