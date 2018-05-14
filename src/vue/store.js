@@ -23,8 +23,8 @@ const store = new Vuex.Store({
             if(state.movies.findIndex(m => m.id === movie.id) !== -1) //verification de l'existance du film
                 state.movies.splice(state.movies.findIndex(m => m.id === movie.id),1, movie);
         },
-        uploadPoster: (state, file) =>{
-
+        uploadPoster: (state, formData) =>{
+            console.log("mutation");
         },
     },
     actions: {
@@ -56,11 +56,17 @@ const store = new Vuex.Store({
                     context.commit('editMovie', movie)
                 })
         },
-        uploadPoster (context, file) {
-            Axios.post('/api/upload', file)
-                .then(response => {
-                    context.commit('uploadPoster', file)
-                })
+        uploadPoster (context, formData) {
+            Axios.post( '/api/upload',
+                formData,
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                }
+            ).then(response => {
+                context.commit('uploadPoster', formData)
+            });
         }
     },
     getters: {

@@ -2,11 +2,11 @@
     <div class="star-rating">
     <label class="star-rating__star"
            v-for="rating in ratings"
-           :class="{'is-selected': ((value >= rating) && value != null), 'is-disabled': disabled}"
+           :class="{'is-selected': ((value_model >= rating) && value_model != null), 'is-disabled': disabled}"
            v-on:click="set(rating)"
            v-on:mouseover="star_over(rating)"
            v-on:mouseout="star_out">
-        <input class="star-rating star-rating__checkbox" type="radio" :value="rating" :name="name" v-model="value" :disabled="disabled">
+        <input class="star-rating star-rating__checkbox" type="radio" :value="rating" :name="name" v-model="value_model" :disabled="disabled">
         ★
     </label>
     </div>
@@ -26,6 +26,7 @@
 
         data: function () {
             return {
+                value_model: this.value,
                 temp_value: null,
                 ratings: [1, 2, 3, 4, 5]
             };
@@ -39,8 +40,8 @@
                 var self = this;
 
                 if (!this.disabled) {
-                    this.temp_value = this.value;
-                    return this.value = index;
+                    this.temp_value = this.value_model;
+                    return this.value_model = index;
                 }
 
             },
@@ -52,7 +53,7 @@
                 var self = this;
 
                 if (!this.disabled) {
-                    return this.value = this.temp_value;
+                    return this.value_model = this.temp_value;
                 }
             },
 
@@ -64,12 +65,12 @@
 
                 if (!this.disabled) {
                     this.temp_value = value;
-                    return this.value = value;
+                    return this.value_model = value;
                 }
             }
         },
         watch: {
-            value(val) {
+            value_model(val) {
                 this.$emit('input', val)
             }
         },

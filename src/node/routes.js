@@ -1,8 +1,11 @@
 const express = require('express');
+const multer = require('multer');
 const path = require('path');
 const router = express();
 const cors = require('cors');
-var upload = multer({ dest: '/src/static/poster/' })
+const upload = multer({ dest: './src/static/poster/' });
+const fs = require("fs");
+
 
 
 router.use(cors());
@@ -10,7 +13,7 @@ router.use(express.json());
 router.use(express.urlencoded());
 router.use('/static', express.static(path.join(__dirname + '/../static')));
 
-var movies = [
+const movies = [
     {
         id: 0,
         title: "Avengers : Infinity War",
@@ -102,7 +105,8 @@ var movies = [
         desc : 'L\'histoire de Venom (Eddie Brock), l\'ennemi de Spider-Man, qui cherche inlassablement à se venger de l\'homme-araignée qui l\'a fait renvoyer du Daily Bugle.',
         poster_url : '/../../static/poster/venom.jpg'
     },
-]
+];
+const type = upload.single('file');
 
 router.get('/src/dist/build.js', (request, response) => {
     response.sendFile(path.join(__dirname + '/../dist/build.js'))
@@ -132,22 +136,42 @@ router.post('/api/movie', (request, response) => {
 //Remove a movie
 router.put('/api/movie/:id', (request, response) => {
     let id = request.body.params.id;
-    movies.splice(id,1);
-    response.json(movies);
+    if(id !== -1) {
+        movies.splice(id, 1);
+        response.json(movies);
+    } else {
+        response.status(404);
+        response.json({error: "DELETE : Movie not found."})
+    }
 });
 
 //Edit
 router.put('/api/movie/edit/:movie', (request, response) => {
     let movie = request.body;
-    movies.splice(movies.findIndex(m => movie.id === m.id),1, movie);
-    response.json(movies);
+    if(movies.findIndex(m => movie.id === m.id) !== -1) {
+        movies.splice(movies.findIndex(m => movie.id === m.id), 1, movie);
+        response.json(movies);
+    } else {
+        response.status(404);
+        response.json({error: "EDIT : Movie not found."})
+    }
 });
 
 //Upload poster
-router.post('/api/upload', upload.single('poster'), function (req, res, next) {
-    // req.file is the `avatar` file
-    // req.body will hold the text fields, if there were any
-})
+router.post('/api/upload', type, function (req, res, next) {
+    if (!req.file) {
+        console.log("No file received");
+        console.log(req.file);
+        return res.send({
+            success: false
+        });
 
+    } else {
+        console.log('file received');
+        return res.send({
+            success: true
+        })
+    }
+});
 
 module.exports = router;

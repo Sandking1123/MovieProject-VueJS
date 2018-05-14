@@ -61,7 +61,8 @@
             </div>
             <div class="inline">
                 Poster du film :
-                <v-btn color="primary" class="black--text"><v-icon>attach_file</v-icon></v-btn><input name="poster" type="file"/>
+                <v-btn color="primary" class="black--text"><v-icon>attach_file</v-icon></v-btn>
+                <input name="file" type="file" id="file" ref="file" v-on:change="handleFileUpload()"/>
             </div>
             <br>
             <v-btn
@@ -79,6 +80,7 @@
         data() {
             return {
                 id: this.$route.params.id,
+                file: "",
                 valid: true,
                 items: [
                     'Action',
@@ -131,14 +133,20 @@
                         birth: this.movie.real.birth,
                     };
 
+                    let formData = new FormData();
+                    formData.append('file', this.file);
+
                     this.$store.dispatch('editMovie', movie).then(
                         () =>
-                            this.$store.dispatch('uploadPoster', file).then(
+                            this.$store.dispatch('uploadPoster', formData).then(
                                 () =>
                                     this.$router.replace({path: '/'})
                             )
                     );
                 }
+            },
+            handleFileUpload(){
+                this.file = this.$refs.file.files[0];
             }
         }
     }
