@@ -55,6 +55,7 @@
             Note du film
             <star-rating
                     :value="movie.note"
+                    v-model="movie.note"
             ></star-rating>
             <v-btn
                     @click="submit"

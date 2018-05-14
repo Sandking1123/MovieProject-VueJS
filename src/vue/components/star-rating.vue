@@ -17,11 +17,11 @@
         name: "star-rating",
 
         props: {
-            'name': String,
-            'value': null,
-            'id': String,
-            'disabled': Boolean,
-            'required': Boolean
+            value: null,
+            disabled: Boolean,
+            required: Boolean,
+            name: String,
+            id: String,
         },
 
         data: function () {
@@ -67,7 +67,12 @@
                     return this.value = value;
                 }
             }
-        }
+        },
+        watch: {
+            value(val) {
+                this.$emit('input', val)
+            }
+        },
     }
 </script>
 
