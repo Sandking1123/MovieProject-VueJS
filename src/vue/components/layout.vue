@@ -52,9 +52,6 @@
             }
         },
         computed: {
-            movies: function() {
-                return this.$store.state.movies;
-            },
             screenSize() {
                 return this.$vuetify.breakpoint.mdAndDown ? 'movie-content-md' : 'movie-content';
             }
@@ -122,6 +119,10 @@
 
   .main-flex {
     padding-left: 100px;
+  }
+
+  .application.theme--light {
+    background-color: #ffffff !important;
   }
 </style>
 

@@ -10,15 +10,17 @@
 </template>
 
 <script>
+    import { mapState } from 'vuex'
+
     export default {
         data () {
             return { }
         },
-        computed: {
+        computed: mapState ({
             movies: function() {
                 return this.$store.state.movies;
             }
-        },
+        }),
         mounted: function() {
             this.$store.dispatch("displayMovies")
         }

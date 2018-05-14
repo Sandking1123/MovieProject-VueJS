@@ -16,10 +16,12 @@ const store = new Vuex.Store({
             state.movies.push(movie)
         },
         removeMovie: (state, id) =>{
-            state.movies.splice(id,1);
+            if(id !== -1) //verification de l'existance du film
+                state.movies.splice(id,1);
         },
         editMovie: (state, movie) =>{
-           // state.movies.splice(movie.id,1, movie);
+            if(state.movies.findIndex(m => m.id === movie.id) !== -1) //verification de l'existance du film
+                state.movies.splice(state.movies.findIndex(m => m.id === movie.id),1, movie);
         }
     },
     actions: {
@@ -46,14 +48,12 @@ const store = new Vuex.Store({
                 })
         },
         editMovie (context, movie) {
-           /* Axios.put('/api/movie/:id', {
-                params: {
-                    id: movie.id
-                }
-            })
+            console.log("STORE : ");
+            console.log(movie);
+            Axios.put('/api/movie/edit/:movie', movie)
                 .then(response => {
                     context.commit('editMovie', movie)
-                })*/
+                })
         }
     },
     getters: {

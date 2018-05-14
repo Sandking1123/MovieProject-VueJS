@@ -91,7 +91,6 @@
                 requiredRules: [
                     v => !!v || "Ce champ est requis.",
                 ],
-                affiche : "/../../static/poster/no_poster.jpg"
             }
         },
 
@@ -115,7 +114,7 @@
                         type: this.movie.type,
                         desc: this.movie.desc,
                         note: this.movie.note,
-                        poster_url: this.movie.affiche,
+                        poster_url: "/../../static/poster/no_poster.jpg",
                     };
 
                     movie.real = {

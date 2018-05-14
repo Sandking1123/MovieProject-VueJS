@@ -4,12 +4,12 @@
 		<hr>
 		<v-container fluid grid-list-md>
 			<v-layout row wrap justify-space-around>
-				<v-flex xs2>
+				<v-flex md3>
 					<v-card class="details">
 						<img class="affiche" :src="movie.poster_url" alt="affiche">
 					</v-card>
 				</v-flex>
-				<v-flex xs10>
+				<v-flex md9>
 					<v-layout row wrap>
 						<v-card class="details">
 							<v-card-text>
@@ -65,9 +65,7 @@
         },
         methods:{
             deletemovie: function(movie){
-                console.log(this.$store.state.movies.indexOf(movie));
-                console.log(this.$store.state.movies);
-                this.$store.dispatch('removeMovie', this.$store.state.movies.indexOf(movie)).then(
+                this.$store.dispatch('removeMovie', this.$store.state.movies.findIndex(m => m.id === movie.id)).then(
                     () =>
                         this.$router.replace({ path: '/' })
 				);

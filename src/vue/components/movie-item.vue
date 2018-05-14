@@ -47,21 +47,21 @@
         },
         methods: {
             deletemovie: function(movie){
-                console.log(this.$store.state.movies.indexOf(movie));
-                console.log(this.$store.state.movies);
-                document.getElementById(movie.id).style.display = "none";
-                this.$store.dispatch('removeMovie', this.$store.state.movies.indexOf(movie)).then(
-                    () =>
-                        this.$router.replace({ path: '/' })
-				);
+                this.$store.dispatch('removeMovie', this.$store.state.movies.findIndex(m => m.id === movie.id));
             },
         },
         computed : {
             cutLongtext() {
-                return (this.movie.title.length >= 17)?this.movie.title.slice(0,16) + "...":this.movie.title;
+                if(this.movie.title !== undefined)
+                    return (this.movie.title.length >= 17)?this.movie.title.slice(0,16) + "...":this.movie.title;
+                else
+                    return "Sans titre"
             },
             cutLongtDesc() {
-                return (this.movie.desc.length >= 100)?this.movie.desc.slice(0,99) + "...":this.movie.desc;
+                if(this.movie.desc !== undefined)
+                    return (this.movie.desc.length >= 100)?this.movie.desc.slice(0,99) + "...":this.movie.desc;
+                else
+                    return "Aucune description."
             }
         }
     }

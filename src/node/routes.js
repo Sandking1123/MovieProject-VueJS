@@ -131,14 +131,14 @@ router.post('/api/movie', (request, response) => {
 router.put('/api/movie/:id', (request, response) => {
     let id = request.body.params.id;
     movies.splice(id,1);
+    response.json(movies);
 });
 
 //Edit
-/*
-router.post('/api/movie/:id', (request, response) => {
+router.put('/api/movie/edit/:movie', (request, response) => {
     let movie = request.body;
-    movies.splice(movie.id,1, movie);
-    response.json(movie);
-});*/
+    movies.splice(movies.findIndex(m => movie.id === m.id),1, movie);
+    response.json(movies);
+});
 
 module.exports = router;
