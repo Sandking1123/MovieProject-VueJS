@@ -61,8 +61,9 @@
             </div>
             <div class="inline">
                 Poster du film :
-                <v-btn color="primary" class="black--text"><v-icon>attach_file</v-icon></v-btn>
                 <input name="file" type="file" id="file" ref="file" v-on:change="handleFileUpload()"/>
+                <v-btn color="primary" class="black--text" @click="chooseFiles()"><v-icon>attach_file</v-icon></v-btn>
+                <p><i id="fileName"></i></p>
             </div>
             <br>
             <v-btn
@@ -154,7 +155,22 @@
             },
             handleFileUpload(){
                 this.file = this.$refs.file.files[0];
-            }
+                let fileName = (this.file)?this.file.name:"";
+                document.getElementById("fileName").innerText = fileName;
+            },
+            chooseFiles() {
+                document.getElementById("file").click();
+            },
+            search(e){
+                axios.get("http://www.omdbapi.com/?apikey=thewdb&s=" + e.target.value)
+                    .then(res => {
+                        this.movies = res.data.Response ? res.data.Search : []
+                        console.log("movies : ", this.movies)
+                    })
+                    .catch(err => {
+                        console.log("error :", err)
+                    })
+            },
         }
     }
 </script>
@@ -168,6 +184,7 @@
         display: inline;
     }
 
-    input[type="file"] {
+    .form-add-content input[type="file"] {
+        display: none;
     }
 </style>

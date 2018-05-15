@@ -61,8 +61,9 @@
             </div>
             <div class="inline">
                 Poster du film :
-                <v-btn color="primary" class="black--text"><v-icon>attach_file</v-icon></v-btn>
+                <v-btn color="primary" class="black--text" @click="chooseFiles()"><v-icon>attach_file</v-icon></v-btn>
                 <input name="file" type="file" id="file" ref="file" v-on:change="handleFileUpload()"/>
+                <p><i id="fileName"></i></p>
             </div>
             <br>
             <v-btn
@@ -148,7 +149,12 @@
             },
             handleFileUpload(){
                 this.file = this.$refs.file.files[0];
-            }
+                let fileName = (this.file)?this.file.name:"";
+                document.getElementById("fileName").innerText = fileName;
+            },
+            chooseFiles() {
+                document.getElementById("file").click();
+            },
         }
     }
 </script>
@@ -162,6 +168,7 @@
         display: inline;
     }
 
-    input[type="file"] {
+    .form-edit-content input[type="file"] {
+        display: none;
     }
 </style>

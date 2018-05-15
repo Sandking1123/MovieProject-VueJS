@@ -98,4 +98,11 @@
 	.synopsis {
 		margin-top: 50px !important;
 	}
+
+	.details .affiche {
+		max-width: 100%;
+		max-width: -moz-available;          /* WebKit-based browsers will ignore this. */
+		max-width: -webkit-fill-available;  /* Mozilla-based browsers will ignore this. */
+		max-width: fill-available;
+	}
 </style>
