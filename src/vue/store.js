@@ -24,7 +24,13 @@ const store = new Vuex.Store({
                 state.movies.splice(state.movies.findIndex(m => m.id === movie.id),1, movie);
         },
         uploadPoster: (state, formData) =>{
-            console.log("mutation");
+            let index = state.movies.findIndex(m => m.id == formData.get("movieId"));
+            if(index !== -1 && formData.get("file")) {
+                let movie = state.movies[index];
+                let extension = formData.get("file").name.split(".").reverse()[0];
+                let filename = formData.get("file").name.split(".")[0] + "_" + movie.id + "." + extension; //unicite de l'image grace à l'ID
+                movie.poster_url = "/../../static/poster/" + filename;
+            }
         },
     },
     actions: {
@@ -35,10 +41,13 @@ const store = new Vuex.Store({
                 })
         },
         addMovie (context, movie) {
-            Axios.post('/api/movie', movie)
-                .then(response => {
-                    context.commit('addMovie', movie)
-                })
+            return new Promise((resolve, reject) => {
+                Axios.post('/api/movie', movie)
+                    .then(response => {
+                        context.commit('addMovie', response.data);
+                        resolve(response.data);
+                    })
+            });
         },
         removeMovie (context, id) {
             Axios.put('/api/movie/:id', {
@@ -53,7 +62,7 @@ const store = new Vuex.Store({
         editMovie (context, movie) {
             Axios.put('/api/movie/edit/:movie', movie)
                 .then(response => {
-                    context.commit('editMovie', movie)
+                    context.commit('editMovie', response.data)
                 })
         },
         uploadPoster (context, formData) {

@@ -52,10 +52,19 @@
                     v-model="newFilm.synopsisFilm"
                     textarea
             ></v-text-field>
-            Note du film
-            <star-rating
-                    v-model="newFilm.note"
-            ></star-rating>
+            <div class="inline">
+                Note du film :
+                <star-rating
+                        :value="newFilm.note"
+                        v-model="newFilm.note"
+                ></star-rating>
+            </div>
+            <div class="inline">
+                Poster du film :
+                <v-btn color="primary" class="black--text"><v-icon>attach_file</v-icon></v-btn>
+                <input name="file" type="file" id="file" ref="file" v-on:change="handleFileUpload()"/>
+            </div>
+            <br>
             <v-btn
                     @click="submit"
                     :disabled="!valid"
@@ -70,6 +79,7 @@
     export default {
         data: () => ({
             valid: true,
+            file: "",
             newFilm : {
                 nameFilm: '',
                 anneeFilm: '',
@@ -81,7 +91,7 @@
                     naissanceReal: '',
                 },
                 synopsisFilm: '',
-                note : 0,
+                note : 1,
                 affiche : "/../../static/poster/no_poster.jpg"
             },
             items: [
@@ -103,7 +113,7 @@
             requiredRules: [
                 v => !!v || "Ce champ est requis.",
             ],
-    }),
+        }),
 
         methods: {
             submit() {
@@ -127,11 +137,23 @@
                         birth: this.newFilm.newReal.naissanceReal,
                     };
 
+                    let formData = new FormData();
+                    formData.append('file', this.file);
+
                     this.$store.dispatch('addMovie', movie).then(
-                        () =>
-                            this.$router.replace({path: '/'})
+                        (movieWithId) => {
+                            console.log(movieWithId);
+                            formData.append('movieId', movieWithId.id);
+                            this.$store.dispatch('uploadPoster', formData).then(
+                                () =>
+                                    this.$router.replace({path: '/'})
+                            )
+                        }
                     );
                 }
+            },
+            handleFileUpload(){
+                this.file = this.$refs.file.files[0];
             }
         }
     }
@@ -140,5 +162,12 @@
 <style lang="css">
     .form-add-content hr {
         margin-bottom: 20px;
+    }
+
+    .inline {
+        display: inline;
+    }
+
+    input[type="file"] {
     }
 </style>

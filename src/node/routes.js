@@ -127,9 +127,10 @@ router.post('/api/movie', (request, response) => {
     let id = null;
     do {
         id = Math.random().toString(36).slice(2);
-    } while (movies.some(movie =>movie.id === id));
+    } while (movies.some(movie => movie.id === id));
     movie.id = id;
     movies.push(movie);
+    response.status(200);
     response.json(movie);
 });
 
@@ -161,16 +162,35 @@ router.put('/api/movie/edit/:movie', (request, response) => {
 router.post('/api/upload', type, function (req, res, next) {
     if (!req.file) {
         console.log("No file received");
-        console.log(req.file);
         return res.send({
             success: false
         });
 
     } else {
         console.log('file received');
-        return res.send({
-            success: true
-        })
+        const extension = req.file.originalname.split(".").reverse()[0];
+        const filename = req.file.originalname.split(".")[0] + "_" + req.body.movieId + "." + extension; //unicite de l'image grace à l'ID
+        const newPath = req.file.destination + filename;
+
+        let index = movies.findIndex(m => m.id == req.body.movieId);
+        if(index !== -1) {
+            movies[index].poster_url = "/../../static/poster/" + filename;
+            fs.rename(req.file.path, newPath,
+                err => {
+                    if (err) {
+                        throw (err);
+                    }
+                }
+            );
+            res.status(200);
+            return res.send({
+                success: true
+            });
+        }
+        else {
+            res.status(404);
+            res.json({error: "UPLOAD POSTER : Movie not found."})
+        }
     }
 });
 

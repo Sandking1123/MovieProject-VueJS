@@ -135,6 +135,7 @@
 
                     let formData = new FormData();
                     formData.append('file', this.file);
+                    formData.append('movieId', movie.id);
 
                     this.$store.dispatch('editMovie', movie).then(
                         () =>

@@ -1,40 +1,42 @@
 <template>
-	<v-card color="cards" class="black--text" :id="movie.id">
-		<v-container fluid grid-list-lg>
-			<v-layout>
-				<v-flex xs5>
-					<v-card-media
-							v-bind:src="movie.poster_url"
-							height="200px"
-							contain
-					></v-card-media>
+	<v-fade-transition>
+		<v-card color="cards" class="black--text" :id="movie.id">
+			<v-container fluid grid-list-lg>
+				<v-layout>
+					<v-flex xs5>
+						<v-card-media
+								v-bind:src="movie.poster_url"
+								height="200px"
+								contain
+						></v-card-media>
+					</v-flex>
+					<v-flex xs7>
+						<div>
+							<div class="headline">{{ cutLongtext }}</div>
+							<div>Année de sortie : {{ movie.year }} </div>
+							<div>Genre : {{ movie.type }} </div>
+							<div>Langue : {{ movie.lang }} </div>
+							<div>De {{ movie.real.name }} ({{movie.real.nationality}})</div>
+							<star-rating :value="movie.note" :disabled="true"></star-rating>
+						</div>
+					</v-flex>
+				</v-layout>
+			</v-container>
+			<v-card-actions>
+				<v-flex xs12>
+					<router-link :to="{ name: 'movie', params: { id: movie.id }}" tag="span"><v-btn flat>Détails</v-btn></router-link>
+					<router-link :to="{ name: 'edit', params: { id: movie.id }}" tag="span"><v-btn flat>Modifier</v-btn></router-link>
+					<v-btn flat color="red" v-on:click="deletemovie(movie)">Supprimer</v-btn>
+					<v-btn icon @click.native="show = !show"><v-icon>{{ show ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</v-icon></v-btn>
 				</v-flex>
-				<v-flex xs7>
-					<div>
-						<div class="headline">{{ cutLongtext }}</div>
-						<div>Année de sortie : {{ movie.year }} </div>
-						<div>Genre : {{ movie.type }} </div>
-						<div>Langue : {{ movie.lang }} </div>
-						<div>De {{ movie.real.name }} ({{movie.real.nationality}})</div>
-						<star-rating :value="movie.note" :disabled="true"></star-rating>
-					</div>
-				</v-flex>
-			</v-layout>
-		</v-container>
-		<v-card-actions>
-			<v-flex xs12>
-				<router-link :to="{ name: 'movie', params: { id: movie.id }}" tag="span"><v-btn flat>Détails</v-btn></router-link>
-				<router-link :to="{ name: 'edit', params: { id: movie.id }}" tag="span"><v-btn flat>Modifier</v-btn></router-link>
-				<v-btn flat color="red" v-on:click="deletemovie(movie)">Supprimer</v-btn>
-				<v-btn icon @click.native="show = !show"><v-icon>{{ show ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</v-icon></v-btn>
-			</v-flex>
-		</v-card-actions>
-		<v-slide-y-transition>
-			<v-card-text v-show="show">
-				{{cutLongtDesc}}
-			</v-card-text>
-		</v-slide-y-transition>
-	</v-card>
+			</v-card-actions>
+			<v-slide-y-transition>
+				<v-card-text v-show="show">
+					{{cutLongtDesc}}
+				</v-card-text>
+			</v-slide-y-transition>
+		</v-card>
+	</v-fade-transition>
 </template>
 
 <script>
