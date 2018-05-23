@@ -125,7 +125,7 @@
                         type: this.movie.type,
                         desc: this.movie.desc,
                         note: this.movie.note,
-                        poster_url: "/../../static/poster/no_poster.jpg",
+                        poster_url: this.movie.poster_url,
                     };
 
                     movie.real = {

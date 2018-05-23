@@ -6,13 +6,12 @@ const cors = require('cors');
 const upload = multer({ dest: './src/static/poster/' });
 const fs = require("fs");
 
-
-
 router.use(cors());
 router.use(express.json());
 router.use(express.urlencoded());
 router.use('/static', express.static(path.join(__dirname + '/../static')));
 
+//Movies examples
 const movies = [
     {
         id: 0,
@@ -126,7 +125,7 @@ router.post('/api/movie', (request, response) => {
     let movie = request.body;
     let id = null;
     do {
-        id = Math.random().toString(36).slice(2);
+        id = Math.random().toString(36).slice(2); //Génération d'un id aléatoire
     } while (movies.some(movie => movie.id === id));
     movie.id = id;
     movies.push(movie);
@@ -170,7 +169,7 @@ router.post('/api/upload', type, function (req, res, next) {
         console.log('file received');
         const extension = req.file.originalname.split(".").reverse()[0];
         const filename = req.file.originalname.split(".")[0] + "_" + req.body.movieId + "." + extension; //unicite de l'image grace à l'ID
-        const newPath = req.file.destination + filename;
+        const newPath = req.file.destination + filename; //Nouveau nom
 
         let index = movies.findIndex(m => m.id == req.body.movieId);
         if(index !== -1) {
