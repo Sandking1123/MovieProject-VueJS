@@ -161,16 +161,6 @@
             chooseFiles() {
                 document.getElementById("file").click();
             },
-            search(e){
-                axios.get("http://www.omdbapi.com/?apikey=thewdb&s=" + e.target.value)
-                    .then(res => {
-                        this.movies = res.data.Response ? res.data.Search : []
-                        console.log("movies : ", this.movies)
-                    })
-                    .catch(err => {
-                        console.log("error :", err)
-                    })
-            },
         }
     }
 </script>
